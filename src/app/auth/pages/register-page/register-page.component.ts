@@ -1,6 +1,11 @@
 import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators, FormGroup, AbstractControl } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { FormUtils } from '../../../utils/form-utils';
 
 @Component({
@@ -9,27 +14,40 @@ import { FormUtils } from '../../../utils/form-utils';
   templateUrl: './register-page.component.html',
 })
 export class RegisterPageComponent {
-  private fb = inject( FormBuilder );
+  fb = inject(FormBuilder);
+
   formUtils = FormUtils;
-  myForm = this.fb.group({
-    name: [ '', [Validators.required, Validators.pattern( FormUtils.namePattern )]],
-    email: [ '', [Validators.required, Validators.email, Validators.pattern( FormUtils.emailPattern ) ]],
-    username: [ '', [Validators.required, Validators.minLength(6), Validators.pattern( FormUtils.notOnlySpacesPattern ) ]],
-    password: [ '', [Validators.required, Validators.minLength(6)] ],
-    password2: [ '', Validators.required ],
-  },
-  {
-    validators:[
-      this.formUtils.isFieldEqualFieldTwo('password', 'password2')
-    ]
-  });
 
+  myForm = this.fb.group(
+    {
+      name: [
+        '',
+        [Validators.required, Validators.pattern(FormUtils.namePattern)],
+      ],
+      email: [
+        '',
+        [Validators.required, Validators.pattern(FormUtils.emailPattern)],
+        [FormUtils.checkingServerResponse],
+      ],
+      username: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.pattern(FormUtils.notOnlySpacesPattern),
+          FormUtils.notStrider,
+        ],
+      ],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      password2: ['', Validators.required],
+    },
+    {
+      validators: [FormUtils.isFieldOneEqualFieldTwo('password', 'password2')],
+    }
+  );
 
-
-  onSubmit(){
+  onSubmit() {
     this.myForm.markAllAsTouched();
     console.log(this.myForm.value);
-    
   }
-
 }

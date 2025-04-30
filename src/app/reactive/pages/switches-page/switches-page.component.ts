@@ -1,6 +1,11 @@
 import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { FormUtils } from '../../../utils/form-utils';
 
 @Component({
@@ -9,16 +14,18 @@ import { FormUtils } from '../../../utils/form-utils';
   templateUrl: './switches-page.component.html',
 })
 export class SwitchesPageComponent {
-  private fb = inject( FormBuilder );
-  formsUtils = FormUtils;
+  private fb = inject(FormBuilder);
+  formUtils = FormUtils;
+
   myForm: FormGroup = this.fb.group({
     gender: ['M', Validators.required],
-    wantNotifications: [ true ],
-    termAndConditions: [ false, Validators.requiredTrue ]
+    wantNotifications: [true],
+    termAndConditions: [false, Validators.requiredTrue],
   });
 
-  onSubmit(){
+  onSubmit() {
     this.myForm.markAllAsTouched();
-    
+
+    console.log(this.myForm.value);
   }
 }
